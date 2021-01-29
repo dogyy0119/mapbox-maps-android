@@ -31,8 +31,7 @@ class MapboxMap internal constructor(
   MapProjectionDelegate,
   MapFeatureQueryDelegate,
   ObservableInterface,
-  MapListenerDelegate,
-  MapStyleStateDelegate {
+  MapListenerDelegate {
 
   private val nativeMapWeakRef = WeakReference(nativeMap)
   internal lateinit var style: Style
@@ -161,9 +160,6 @@ class MapboxMap internal constructor(
     onStyleLoaded: Style.OnStyleLoaded? = null,
     onMapLoadErrorListener: OnMapLoadErrorListener? = null
   ) {
-    if (::style.isInitialized) {
-      style.fullyLoaded = false
-    }
     onMapLoadErrorListener?.let {
       addOnMapLoadErrorListener(it)
     }
@@ -209,7 +205,7 @@ class MapboxMap internal constructor(
    */
   fun getStyle(onStyleLoaded: Style.OnStyleLoaded) {
     if (::style.isInitialized) {
-      if (style.fullyLoaded) {
+      if (style.isStyleFullyLoaded) {
         // style has loaded, notify callback immediately
         onStyleLoaded.onStyleLoaded(style)
       } else {
@@ -226,7 +222,7 @@ class MapboxMap internal constructor(
    * Get the Style of the map synchronously, will return null is style is not loaded yet.
    */
   fun getStyle(): Style? {
-    if (::style.isInitialized && style.fullyLoaded) {
+    if (::style.isInitialized && style.isStyleFullyLoaded) {
       // style has loaded, return it immediately
       return style
     }
@@ -1010,13 +1006,6 @@ class MapboxMap internal constructor(
    * @return Elevation (in meters) multiplied by current terrain exaggeration, or empty if elevation for the coordinate is not available.
    */
   fun getElevation(coordinate: Point) = nativeMapWeakRef.call { this.getElevation(coordinate) }
-
-  /**
-   * Returns if the style has been fully loaded.
-   */
-  override fun isFullyLoaded(): Boolean {
-    return style.isFullyLoaded()
-  }
 
   /**
    * Prepares the drag gesture to use the provided screen coordinate as a pivot point.

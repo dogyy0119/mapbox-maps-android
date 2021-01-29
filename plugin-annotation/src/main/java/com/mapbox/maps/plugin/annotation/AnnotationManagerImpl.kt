@@ -23,7 +23,6 @@ import com.mapbox.maps.plugin.PLUGIN_GESTURE_CLASS_NAME
 import com.mapbox.maps.plugin.delegates.MapDelegateProvider
 import com.mapbox.maps.plugin.delegates.MapFeatureQueryDelegate
 import com.mapbox.maps.plugin.delegates.MapProjectionDelegate
-import com.mapbox.maps.plugin.delegates.MapStyleStateDelegate
 import com.mapbox.maps.plugin.gestures.GesturesPlugin
 import com.mapbox.maps.plugin.gestures.OnMapClickListener
 import com.mapbox.maps.plugin.gestures.OnMapLongClickListener
@@ -44,7 +43,6 @@ abstract class AnnotationManagerImpl<G : Geometry, T : Annotation<G>, S : Annota
   private var mapProjectionDelegate: MapProjectionDelegate = delegateProvider.mapProjectionDelegate
   private var mapFeatureQueryDelegate: MapFeatureQueryDelegate =
     delegateProvider.mapFeatureQueryDelegate
-  private var styleStateDelegate: MapStyleStateDelegate = delegateProvider.styleStateDelegate
   internal lateinit var layer: L
   protected lateinit var source: GeoJsonSource
   protected val dataDrivenPropertyUsageMap: MutableMap<String, Boolean> = HashMap()
