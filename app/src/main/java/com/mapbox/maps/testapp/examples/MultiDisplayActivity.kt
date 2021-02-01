@@ -8,7 +8,11 @@ import android.os.Build
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.mapbox.geojson.Point
+import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.Style
+import com.mapbox.maps.plugin.animation.MapAnimationOptions.Companion.mapAnimationOptions
+import com.mapbox.maps.plugin.animation.flyTo
 import com.mapbox.maps.testapp.R
 import kotlinx.android.synthetic.main.activity_multi_display.*
 import kotlinx.android.synthetic.main.activity_simple_map.mapView
@@ -25,6 +29,23 @@ class MultiDisplayActivity : AppCompatActivity() {
     button.setOnClickListener {
       displayMapInSecondaryScreen()
     }
+    moveCameraButton.setOnClickListener {
+      moveCamera()
+    }
+  }
+
+  private fun moveCamera() {
+    val cameraOption = CameraOptions.Builder()
+      .center(Point.fromLngLat(-120.0, 43.0))
+      .zoom(14.0)
+      .build()
+
+    mapView.getMapboxMap().flyTo(
+      cameraOption,
+      mapAnimationOptions {
+        duration = 1000
+      }
+    )
   }
 
   private fun displayMapInSecondaryScreen() {
